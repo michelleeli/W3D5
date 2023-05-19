@@ -39,19 +39,20 @@ class PolyTreeNode
         "#PolyTreeNode#{self.object_id}  @parent=#{@parent}   @children = #{@children}"
     end
 
-    def bfs(target)
+    def bfs(target_value)
+        return self if self.value == target_value
         queue = []
-        queue << self.value
-        return self.value if self.value == target
+        queue << self
 
         until queue.empty?
-            if queue.shift == target
-                return self.value
+            current_child = queue.shift
+            if current_child.value == target_value
+                return current_child
             else
-                queue += self.children
+                queue += current_child.children
             end 
+            return nil
         end 
-        return nil
     end 
 
 end
