@@ -1,5 +1,7 @@
-class PolyTreeNode
+require "byebug"
 
+class PolyTreeNode
+  
     attr_accessor :parent, :children, :value
   
     def initialize(value)
@@ -42,9 +44,10 @@ class PolyTreeNode
     def dfs(target_value)
         return self if self.value == target_value
         self.children.each do |child|
-            if child.dfs(target_value) != nil
-                return self 
-            end 
+           result = child.dfs(target_value)
+           if result != nil
+            return result
+           end
         end 
         return nil
 
