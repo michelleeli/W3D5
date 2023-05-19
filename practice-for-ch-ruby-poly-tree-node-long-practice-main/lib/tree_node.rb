@@ -9,30 +9,50 @@ class PolyTreeNode
     end 
 
     def parent= (node)
-        if node != nil
-          @parent = node
-          parent.children << self unless parent.children.include?(self)
-        end
+        if self.parent != nil && self.parent != node
+            self.parent.children.delete(self)  
+        end 
+        @parent = node
+        if node != nil && !parent.children.include?(self)
 
-        return nil
-       
-        # if self.parent != nil && self.parent != node
-        #     self.parent.children.delete(self)   
-        #     @parent = node 
-        # end
+            parent.children << self
+        else 
+            return nil 
+        end 
+    end 
 
-        #     if self.parent != nil && !parent.children.include?(self)
-        #         @parent = node
-        #         parent.children << self
-        #    end 
+    def add_child(child_node)
+        child_node.parent = self
+        self.children << child_node if !self.children.include?(child_node)
+    end 
 
+    def remove_child(child_node)
+        child_node.parent = nil
+        if self.children.include?(child_node)
+            self.children.delete(child_node) 
+        else
+            raise "not a child"
+        end 
     end 
 
     def inspect
         "#PolyTreeNode#{self.object_id}  @parent=#{@parent}   @children = #{@children}"
     end
 
+    def bfs(target)
+        queue = []
+        queue << self.value
+        return self.value if self.value == target
 
-
+        until queue.empty?
+            if queue.shift == target
+                return self.value
+            else
+                queue += self.children
+            end 
+        end 
+        return nil
+    end 
 
 end
+
